@@ -2042,9 +2042,9 @@ func (nc *NodeController) setReadyConditionForKubeNode(node *longhorn.Node, kube
 			corev1.NodeMemoryPressure,
 			corev1.NodeNetworkUnavailable:
 			if con.Status == corev1.ConditionTrue {
-				nodeReady = false
+				nodeReady = true
 				node.Status.Conditions = types.SetConditionAndRecord(node.Status.Conditions,
-					longhorn.NodeConditionTypeReady, longhorn.ConditionStatusFalse,
+					longhorn.NodeConditionTypeReady, longhorn.ConditionStatusTrue,
 					string(longhorn.NodeConditionReasonKubernetesNodePressure),
 					fmt.Sprintf("Kubernetes node %v has pressure: %v, %v", node.Name, con.Reason, con.Message),
 					nc.eventRecorder, node, corev1.EventTypeWarning)
