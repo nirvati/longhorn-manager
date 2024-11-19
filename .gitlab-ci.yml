@@ -1,0 +1,24 @@
+include:
+  - project: 'nirvati/ci'
+    file: '/docker-legacy.yml'
+    inputs:
+      username: $HARBOR_USERNAME
+      password: $HARBOR_PASSWORD
+      registry: $HARBOR_HOST
+      project: $HARBOR_PROJECT
+      container: $CI_PROJECT_NAME
+      buildx-args: --file package/Dockerfile --build-arg ARCH=$(dpkg --print-architecture)
+
+docker-build-arm64-container:
+    before_script:
+        - apt update && apt install -y curl
+        - curl -sL https://releases.rancher.com/dapper/latest/dapper-$(uname -s)-$(uname -m) -o /usr/local/bin/dapper
+        - chmod +x /usr/local/bin/dapper
+        - /usr/local/bin/dapper -m cp ci
+
+docker-build-amd64-container:
+    before_script:
+        - apt update && apt install -y curl
+        - curl -sL https://releases.rancher.com/dapper/latest/dapper-$(uname -s)-$(uname -m) -o /usr/local/bin/dapper
+        - chmod +x /usr/local/bin/dapper
+        - /usr/local/bin/dapper -m cp ci
